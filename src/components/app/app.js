@@ -21,6 +21,7 @@ class App extends Component {
 				{ salary: 841, name: "Lego Cherepan", increase: false, like: false, id: 6 },
 			],
 			term: '',
+			categoryAtr: 'all',
 		}
 		this.maxId = this.state.data.length + 1;
 	}
@@ -73,9 +74,25 @@ class App extends Component {
 		this.setState({ term });
 	}
 
+	onUpdateCategory = (categoryAtr) => {
+		this.setState({ categoryAtr })
+	}
+	onChangeCategory = (items, categoryAtr) => {
+		switch (categoryAtr) {
+			case 'up':
+				return items.filter(item => item.like);
+			case 'greatSalary':
+				return items.filter(item => item.salary > 1000)
+			default:
+				return items
+		}
+	}
+
 	render() {
-		const { data, term } = this.state;
-		const visibleData = this.searchEmp(data, term);
+		const { data, term, categoryAtr } = this.state;
+		const tmpData = this.searchEmp(data, term);
+		const visibleData = this.onChangeCategory(tmpData, categoryAtr);
+
 		return (
 			<div className="app">
 				<AppInfo
@@ -84,7 +101,7 @@ class App extends Component {
 				/>
 				<div className="search-panel">
 					<SearchPanel onUpdateSearch={this.onUpdateSearch} />
-					<AppFilter />
+					<AppFilter onUpdateCategory={this.onUpdateCategory} />
 				</div>
 				<EmployeesList
 					data={visibleData}
