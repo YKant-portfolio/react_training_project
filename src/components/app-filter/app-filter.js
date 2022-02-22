@@ -5,7 +5,7 @@ class AppFilter extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			classActive: 'btn3',
+			classActive: 'all',
 		}
 	}
 
@@ -13,44 +13,41 @@ class AppFilter extends Component {
 		const categoryAtr = e.currentTarget.getAttribute('data-category');
 		this.props.onUpdateCategory(categoryAtr);
 		if (categoryAtr === 'up') {
-			this.setState({ classActive: 'btn1' })
+			this.setState({ classActive: 'up' })
 		}
 		else if (categoryAtr === 'greatSalary') {
-			this.setState({ classActive: 'btn2' })
+			this.setState({ classActive: 'greatSalary' })
 		}
 		else {
-			this.setState({ classActive: 'btn3' })
+			this.setState({ classActive: 'all' })
 		}
 	}
 
 	render() {
-		const { classActive } = this.state;
+		const buttonData = [
+			{ dataCategory: 'all', label: 'Все сотрудники', },
+			{ dataCategory: 'up', label: 'На повышение', },
+			{ dataCategory: 'greatSalary', label: 'З/П больше 1000$', },
+		];
+
+		const buttons = buttonData.map(({ dataCategory, label }) => {
+			const active = this.state.classActive === dataCategory;
+			const claszz = active ? 'btn-light' : 'btn btn-outline-light';
+			return (
+				<button type="button"
+					className={`btn ${claszz}`}
+					data-category={dataCategory}
+					onClick={this.onChange}
+					key={dataCategory}
+				>
+					{label}
+				</button>
+			)
+		})
+
 		return (
 			<div className={"btn-group"}>
-				<button type="button"
-					className={classActive === 'btn3' ? 'btn btn-light' : 'btn btn-outline-light'}
-					data-category='all'
-					onClick={this.onChange}
-					value={this.setState.categoryAtr}
-				>
-					Все сотрудники
-				</button>
-				<button type="button"
-					className={classActive === 'btn1' ? 'btn btn-light' : 'btn btn-outline-light'}
-					data-category='up'
-					onClick={this.onChange}
-					value={this.setState.categoryAtr}
-				>
-					На повышение
-				</button>
-				<button type="button"
-					className={classActive === 'btn2' ? 'btn btn-light' : 'btn btn-outline-light'}
-					data-category='greatSalary'
-					onClick={this.onChange}
-					value={this.setState.categoryAtr}
-				>
-					З/П больше 1000$
-				</button>
+				{buttons}
 			</div>
 		)
 	}

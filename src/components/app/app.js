@@ -77,7 +77,7 @@ class App extends Component {
 	onUpdateCategory = (categoryAtr) => {
 		this.setState({ categoryAtr })
 	}
-	onChangeCategory = (items, categoryAtr) => {
+	changeCategory = (items, categoryAtr) => {
 		switch (categoryAtr) {
 			case 'up':
 				return items.filter(item => item.like);
@@ -91,8 +91,7 @@ class App extends Component {
 	render() {
 		const { data, term, categoryAtr } = this.state;
 		const tmpData = this.searchEmp(data, term);
-		const visibleData = this.onChangeCategory(tmpData, categoryAtr);
-
+		const visibleData = this.changeCategory(tmpData, categoryAtr);
 		return (
 			<div className="app">
 				<AppInfo
